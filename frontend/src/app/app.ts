@@ -20,7 +20,8 @@ export class App {
       },
       {
         label: 'Personne',
-        icon: 'pi pi-star'
+        icon: 'pi pi-star',
+        routerLink: ['personne']
       },
       // {
       //   label: 'Projects',

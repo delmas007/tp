@@ -1,1 +1,78 @@
-<p>ajouter-personne works!</p>
+<div class="container">
+  <!-- Toast pour afficher les messages -->
+  <p-toast position="top-right"></p-toast>
+
+  <div class="card form-container">
+    <h2 class="form-title">Ajouter une Personne</h2>
+
+    <form [formGroup]="exampleForm" (ngSubmit)="onSubmit()" class="form">
+
+      <div class="input-group">
+        <input
+          pInputText
+          type="text"
+          id="nom"
+          placeholder="Nom"
+          formControlName="nom"
+          [invalid]="isInvalid('nom')"
+        />
+        @if (isInvalid('nom')) {
+          <p-message severity="error" size="small" variant="simple">
+            Le nom est requis.
+          </p-message>
+        }
+      </div>
+
+      <div class="input-group">
+        <input
+          pInputText
+          type="text"
+          id="prenom"
+          placeholder="Prénom"
+          formControlName="prenom"
+          [invalid]="isInvalid('prenom')"
+        />
+        @if (isInvalid('prenom')) {
+          <p-message severity="error" size="small" variant="simple">
+            Le prénom est requis.
+          </p-message>
+        }
+      </div>
+
+      <div class="input-group">
+        <input
+          pInputText
+          type="number"
+          id="age"
+          placeholder="Âge"
+          formControlName="age"
+          [invalid]="isInvalid('age')"
+          min="1"
+          max="150"
+        />
+        @if (isInvalid('age')) {
+          @if (exampleForm.get('age')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">
+              L'âge est requis.
+            </p-message>
+          }
+          @if (exampleForm.get('age')?.errors?.['min']) {
+            <p-message severity="error" size="small" variant="simple">
+              L'âge doit être supérieur à 0.
+            </p-message>
+          }
+          @if (exampleForm.get('age')?.errors?.['max']) {
+            <p-message severity="error" size="small" variant="simple">
+              L'âge doit être inférieur à 150.
+            </p-message>
+          }
+        }
+      </div>
+
+      <button pButton severity="secondary" type="submit" [loading]="formSubmitted">
+        <span pButtonLabel>Ajouter</span>
+      </button>
+
+    </form>
+  </div>
+</div>

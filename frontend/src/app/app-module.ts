@@ -11,6 +11,18 @@ import { ListePersonne } from './personne/liste-personne/liste-personne';
 import {TableModule} from 'primeng/table';
 import { AjouterPersonne } from './personne/ajouter-personne/ajouter-personne';
 import { ModifierPersonne } from './personne/modifier-personne/modifier-personne';
+import {HttpClientModule} from '@angular/common/http';
+import {ToastModule} from 'primeng/toast';
+import {MessageModule} from 'primeng/message';
+import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {ReactiveFormsModule} from '@angular/forms';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {RippleModule} from 'primeng/ripple';
+import {DockModule} from 'primeng/dock';
+import {MenuModule} from 'primeng/menu';
+import {Tooltip} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -23,11 +35,24 @@ import { ModifierPersonne } from './personne/modifier-personne/modifier-personne
     BrowserModule,
     AppRoutingModule,
     MenubarModule,
-    TableModule
+    TableModule,
+    HttpClientModule,
+    ToastModule,
+    MessageModule,
+    ButtonModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    RippleModule,
+    MenuModule,
+    MenuModule,
+    Tooltip,
   ],
   providers: [
+    ConfirmationService,
     provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
+    MessageService,
     providePrimeNG({
       theme: {
         preset: Aura,
