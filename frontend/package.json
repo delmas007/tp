@@ -28,12 +28,15 @@
     "@angular/forms": "^20.2.0",
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
+    "@primeng/themes": "^20.1.1",
+    "primeicons": "^7.0.0",
     "primeng": "^20.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^20.2.2",
     "@angular/build": "^20.2.2",
     "@angular/cli": "^20.2.2",
     "@angular/compiler-cli": "^20.2.0",

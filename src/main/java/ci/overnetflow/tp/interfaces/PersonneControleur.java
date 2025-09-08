@@ -14,10 +14,10 @@ public class PersonneControleur {
 
     private final PersonneFacade personneFacade;
 
-    @PostMapping("/enregistrer")
+    @PostMapping("/enregistrer/{idDepartement}")
     @ResponseBody
-    public PersonneVO enregistrerUnePersonne(@RequestBody PersonneVO personneVO) {
-        return personneFacade.enregistrerUnePersonne(personneVO);
+    public PersonneVO enregistrerUnePersonne(@RequestBody PersonneVO personneVO,@PathVariable("idDepartement") Long idDepartement) {
+        return personneFacade.enregistrerUnePersonne(personneVO,idDepartement);
     }
 
     @GetMapping("/recuperer/{id}")
@@ -26,10 +26,13 @@ public class PersonneControleur {
         return personneFacade.recupererUnePersonneParSonId(id);
     }
 
-    @PutMapping("/modifier/{id}")
+    @PutMapping("/modifier/{idPersonne}/{idDepartement}")
     @ResponseBody
-    public PersonneVO modifierUnePersonne(@PathVariable("id") Long id,@RequestBody PersonneVO personneVO) {
-        return personneFacade.modifierUnePersonne(id, personneVO);
+    public PersonneVO modifierUnePersonne(
+            @PathVariable("idPersonne") Long idPersonne,
+            @PathVariable("idDepartement") Long idDepartement,
+            @RequestBody PersonneVO personneVO) {
+        return personneFacade.modifierUnePersonne(idPersonne ,personneVO ,idDepartement);
     }
 
     @DeleteMapping("/supprimer/{id}")

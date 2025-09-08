@@ -5,25 +5,26 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
 import {MenubarModule} from 'primeng/menubar';
-import { ListePersonne } from './personne/liste-personne/liste-personne';
+import { ListePersonne } from './modules/personne/liste-personne/liste-personne';
 import {TableModule} from 'primeng/table';
-import { AjouterPersonne } from './personne/ajouter-personne/ajouter-personne';
-import { ModifierPersonne } from './personne/modifier-personne/modifier-personne';
+import { AjouterPersonne } from './modules/personne/ajouter-personne/ajouter-personne';
+import { ModifierPersonne } from './modules/personne/modifier-personne/modifier-personne';
 import {HttpClientModule} from '@angular/common/http';
 import {ToastModule} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {RippleModule} from 'primeng/ripple';
 import {DockModule} from 'primeng/dock';
 import {MenuModule} from 'primeng/menu';
 import {Tooltip} from 'primeng/tooltip';
-
+import {Select} from 'primeng/select';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import Aura from '@primeuix/themes/aura';
 @NgModule({
   declarations: [
     App,
@@ -47,6 +48,9 @@ import {Tooltip} from 'primeng/tooltip';
     MenuModule,
     MenuModule,
     Tooltip,
+    Select,
+    FormsModule,
+    RadioButtonModule,
   ],
   providers: [
     ConfirmationService,

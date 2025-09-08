@@ -1,5 +1,4 @@
 <div class="container">
-  <!-- Toast pour afficher les messages -->
   <p-toast position="top-right"></p-toast>
 
   <div class="card form-container">
@@ -68,6 +67,17 @@
           }
         }
       </div>
+
+      <p-select
+        [options]="departement"
+        formControlName="departement"
+        optionLabel="designation"
+        optionValue="id"
+        placeholder="Sélectionner un département"
+        class="w-full md:w-56">
+      </p-select>
+
+
 
       <button pButton severity="secondary" type="submit" [loading]="formSubmitted">
         <span pButtonLabel>Ajouter</span>

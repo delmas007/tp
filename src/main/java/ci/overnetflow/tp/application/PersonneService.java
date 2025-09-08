@@ -36,6 +36,9 @@ public class PersonneService {
         if (personne.getAge() != null) {
             personneAModifier.setAge(personne.getAge());
         }
+        if (personne.getDepartement() != null) {
+            personneAModifier.setDepartement(personne.getDepartement());
+        }
         return personneRepository.save(personneAModifier);
     }
 

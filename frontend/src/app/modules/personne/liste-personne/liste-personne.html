@@ -1,8 +1,6 @@
 <div class="card">
-  <!-- Toast pour les messages -->
   <p-toast position="top-right"></p-toast>
 
-  <!-- Dialog de confirmation -->
   <p-confirmDialog
     [style]="{ width: '450px' }"
     header="Confirmation de suppression"
@@ -13,13 +11,57 @@
     rejectButtonStyleClass="p-button-secondary">
   </p-confirmDialog>
 
-  <p-table [value]="personnes" [tableStyle]="{ 'min-width': '50rem' }">
+  <!-- Filtre par âge -->
+  <div class="filter-section mb-4">
+    <h4>Filtre par catégorie d'âge</h4>
+    <div class="p-field-radiobutton">
+      <p-radioButton
+        inputId="tous"
+        name="filtreAge"
+        value="tous"
+        [(ngModel)]="filtreAge"
+        (onClick)="appliquerFiltre()">
+      </p-radioButton>
+      <label for="tous" class="ml-2">Tous</label>
+    </div>
+    <div class="p-field-radiobutton">
+      <p-radioButton
+        inputId="mineurs"
+        name="filtreAge"
+        value="mineurs"
+        [(ngModel)]="filtreAge"
+        (onClick)="appliquerFiltre()">
+      </p-radioButton>
+      <label for="mineurs" class="ml-2">Mineurs (moins de 18 ans)</label>
+    </div>
+    <div class="p-field-radiobutton">
+      <p-radioButton
+        inputId="majeurs"
+        name="filtreAge"
+        value="majeurs"
+        [(ngModel)]="filtreAge"
+        (onClick)="appliquerFiltre()">
+      </p-radioButton>
+      <label for="majeurs" class="ml-2">Majeurs (18 ans et plus)</label>
+    </div>
+  </div>
+
+  <p-table
+    [value]="personnesFiltrees"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    sortField="nom"
+    [sortOrder]="1">
     <ng-template #header>
       <tr>
-        <th>Nom</th>
+        <th pSortableColumn="nom">
+          Nom
+          <p-sortIcon field="nom"></p-sortIcon>
+        </th>
         <th>Prénom</th>
         <th>Âge</th>
-        <th style="width: 200px; text-align: center;">Actions</th>
+        <th>Statut</th>
+        <th>Département</th>
+        <th>Actions</th>
       </tr>
     </ng-template>
     <ng-template #body let-personne>
@@ -27,6 +69,15 @@
         <td>{{ personne.nom }}</td>
         <td>{{ personne.prenom }}</td>
         <td>{{ personne.age }}</td>
+        <td>
+          <span
+            class="status-badge"
+            [class.mineur]="personne.age < 18"
+            [class.majeur]="personne.age >= 18">
+            {{ personne.age < 18 ? 'Mineur' : 'Majeur' }}
+          </span>
+        </td>
+        <td>{{ personne.departement.designation }}</td>
         <td class="action-buttons">
           <button
             pButton

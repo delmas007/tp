@@ -14,22 +14,24 @@ export class PersonneService {
   private endpoint: any = environmentDev.endPoint;
 
   laListeDesPersonnes() : Observable<any>{
-    return this.http.get(`${this.baseUrl}/${this.endpoint.getAll}`);
+    return this.http.get(`${this.baseUrl}/${this.endpoint.personne.getAll}`);
   }
 
   supprimerUnePersonne(id: number | undefined) {
-    return this.http.delete(`${this.baseUrl}/${this.endpoint.delete}/${id}`);
+    return this.http.delete(`${this.baseUrl}/${this.endpoint.personne.delete}/${id}`);
   }
 
-  ajouterUnePersonne(data: any) {
-    return this.http.post(`${this.baseUrl}/${this.endpoint.create}`, data);
+  ajouterUnePersonne(data: any, departementId: number) {
+    return this.http.post(`${this.baseUrl}/${this.endpoint.personne.create}/${departementId}`, data);
   }
 
   recupererUnePersonne(id: number) : Observable<any>{
-    return this.http.get(`${this.baseUrl}/${this.endpoint.getOne}/${id}`);
+    return this.http.get(`${this.baseUrl}/${this.endpoint.personne.getOne}/${id}`);
   }
 
-  modifierUnePersonne(id: number, data: any) {
-    return this.http.put(`${this.baseUrl}/${this.endpoint.update}/${id}`, data);
+  modifierUnePersonne(idPersonne: number, data: any,idDepartement: number,) {
+    console.log( "id departement" + idDepartement + " id personne " + idPersonne + " data " + data);
+
+    return this.http.put(`${this.baseUrl}/${this.endpoint.personne.update}/${idPersonne}/${idDepartement}`, data);
   }
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {PersonneVO} from '../modele/personne-modele';
-import {PersonneService} from '../../private/service/personne-service';
+import {PersonneVO} from '../models/personne.model';
+import {PersonneService} from '../../../private/service/personne-service';
 import {Router} from '@angular/router';
 import {ConfirmationService, MessageService} from 'primeng/api';
 
@@ -12,6 +12,8 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 })
 export class ListePersonne {
   personnes!: PersonneVO[];
+  personnesFiltrees!: PersonneVO[];
+  filtreAge: string = 'tous';
 
   constructor(
     private personneService: PersonneService,
@@ -28,6 +30,8 @@ export class ListePersonne {
     this.personneService.laListeDesPersonnes().subscribe({
       next: (response: any) => {
         this.personnes = response;
+        this.personnesFiltrees = [...this.personnes]; // Copie pour le filtrage
+        this.appliquerFiltre();
         console.log(this.personnes);
       },
       error: (error: any) => {
@@ -42,13 +46,30 @@ export class ListePersonne {
     });
   }
 
+  appliquerFiltre() {
+    if (!this.personnes) return;
+
+    switch (this.filtreAge) {
+      case 'mineurs':
+        this.personnesFiltrees = this.personnes.filter(p => p.age < 18);
+        break;
+      case 'majeurs':
+        this.personnesFiltrees = this.personnes.filter(p => p.age >= 18);
+        break;
+      default:
+        this.personnesFiltrees = [...this.personnes];
+        break;
+    }
+  }
+
   modifier(id: number) {
     this.router.navigateByUrl(`/personne/modifier/${id}`);
   }
 
   confirmerSuppression(personne: PersonneVO) {
+    const statut = personne.age < 18 ? 'Mineur' : 'Majeur';
     this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer <strong>${personne.nom} ${personne.prenom}</strong> ?<br/>Cette action est irréversible.`,
+      message: `Êtes-vous sûr de vouloir supprimer <strong>${personne.nom} ${personne.prenom}</strong> (${statut}) ?<br/>Cette action est irréversible.`,
       header: 'Confirmation de suppression',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Oui, supprimer',
@@ -81,7 +102,9 @@ export class ListePersonne {
       next: (response: any) => {
         console.log('Suppression réussie:', response);
 
+
         this.personnes = this.personnes.filter(p => p.id !== id);
+        this.appliquerFiltre();
 
         this.messageService.add({
           severity: 'success',

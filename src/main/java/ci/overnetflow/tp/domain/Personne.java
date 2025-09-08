@@ -11,7 +11,17 @@ public class Personne {
     private String nom;
     private String prenom;
     private Long age;
+    @ManyToOne
+    @JoinColumn(name = "departement")
+    private Departement departement;
 
+    public Long getAge() {
+        return age;
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
+    }
 
     public Long getId() {
         return id;
@@ -37,11 +47,11 @@ public class Personne {
         this.prenom = prenom;
     }
 
-    public Long getAge() {
-        return age;
+    public Departement getDepartement() {
+        return departement;
     }
 
-    public void setAge(Long age) {
-        this.age = age;
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
     }
 }

@@ -1,10 +1,13 @@
 package ci.overnetflow.tp.application;
 
+import ci.overnetflow.tp.domain.Departement;
+
 public class PersonneVO {
     private Long id;
     private String nom;
     private String prenom;
     private Long age;
+    private DepartementVO departement;
 
     public Long getId() {
         return id;
@@ -36,5 +39,13 @@ public class PersonneVO {
 
     public void setAge(Long age) {
         this.age = age;
+    }
+
+    public DepartementVO getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(DepartementVO departement) {
+        this.departement = departement;
     }
 }

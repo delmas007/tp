@@ -1,8 +1,11 @@
-import {Component, inject} from '@angular/core';
-import {PersonneService} from '../../private/service/personne-service';
+import {Component, inject, OnInit} from '@angular/core';
+import {PersonneService} from '../../../private/service/personne-service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
+import {Departement} from '../models/departement.model';
+import {DepartementService} from '../../../private/service/departement-service';
+import {PersonneVO} from '../models/personne.model';
 
 @Component({
   selector: 'app-ajouter-personne',
@@ -10,25 +13,51 @@ import {Router} from '@angular/router';
   templateUrl: './ajouter-personne.html',
   styleUrl: './ajouter-personne.css'
 })
-export class AjouterPersonne {
+export class AjouterPersonne implements OnInit{
   messageService = inject(MessageService);
   router = inject(Router);
   exampleForm: FormGroup;
   formSubmitted = false;
+  personne?: PersonneVO;
 
-  constructor(private fb: FormBuilder, private personneService: PersonneService) {
+  departement: Departement[] | undefined;
+
+  ngOnInit() {
+
+    this.departemenService.listeDesDepartements().subscribe({
+      next: (response: any) => {
+        this.departement = response;
+        console.log(this.departement);
+      },
+      error: (erro: any) => {
+        console.log(erro);
+      }
+    });
+  }
+
+  constructor(private fb: FormBuilder, private personneService: PersonneService, private departemenService:DepartementService) {
     this.exampleForm = this.fb.group({
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
       age: ['', [Validators.required, Validators.min(1), Validators.max(150)]],
+      departement: [null, Validators.required]
     });
   }
+
+
 
   onSubmit() {
     this.formSubmitted = true;
 
     if (this.exampleForm.valid) {
-      this.personneService.ajouterUnePersonne(this.exampleForm.value).subscribe({
+      this.personne={
+        nom: this.exampleForm.get('nom')?.value,
+        prenom: this.exampleForm.get('prenom')?.value,
+        age: this.exampleForm.get('age')?.value
+      }
+      console.log(this.personne);
+      const departementId: number = this.exampleForm.get('departement')?.value;
+      this.personneService.ajouterUnePersonne(this.personne,departementId).subscribe({
         next: (response: any) => {
           console.log('Succès:', response);
 
