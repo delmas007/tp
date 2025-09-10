@@ -36,7 +36,7 @@ describe('ListePersonne', () => {
   ];
 
   beforeEach(async () => {
-    mockPersonneService = jasmine.createSpyObj('PersonneService', ['laListeDesPersonnes', 'supprimerUnePersonne']);
+    mockPersonneService = jasmine.createSpyObj('PersonneService', ['liste', 'supprimer']);
     mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']);
     mockConfirmationService = jasmine.createSpyObj('ConfirmationService', ['confirm']);
     mockMessageService = jasmine.createSpyObj('MessageService', ['add']);
@@ -81,7 +81,7 @@ describe('ListePersonne', () => {
   });
 
   it('devrait charger la liste des personnes avec succès', () => {
-    mockPersonneService.laListeDesPersonnes.and.returnValue(of(PERSONNES));
+    mockPersonneService.liste.and.returnValue(of(PERSONNES));
 
     component.chargerPersonnes();
 
@@ -90,7 +90,7 @@ describe('ListePersonne', () => {
   });
 
   it('devrait afficher un message derreur si le chargement échoue', fakeAsync(() => {
-  mockPersonneService.laListeDesPersonnes.and.returnValue(throwError(() => new Error('Erreur serveur')));
+  mockPersonneService.liste.and.returnValue(throwError(() => new Error('Erreur serveur')));
 
   component.chargerPersonnes();
   flush();
@@ -125,7 +125,7 @@ it('devrait supprimer une personne avec succès et mettre à jour les listes', (
   component.personnesFiltrees = [...PERSONNES];
   spyOn(component, 'appliquerFiltre');
 
-  mockPersonneService.supprimerUnePersonne.and.returnValue(of({}));
+  mockPersonneService.supprimer.and.returnValue(of({}));
 
   component.supprimer(1, PERSONNES[0]);
 
@@ -151,11 +151,11 @@ it('devrait supprimer une personne avec succès et mettre à jour les listes', (
 
 it('devrait gérer la suppression avec un ID undefined', () => {
   component.personnes = [...PERSONNES];
-  mockPersonneService.supprimerUnePersonne.and.returnValue(of({}));
+  mockPersonneService.supprimer.and.returnValue(of({}));
 
   component.supprimer(undefined, PERSONNES[0]);
 
-  expect(mockPersonneService.supprimerUnePersonne).toHaveBeenCalledWith(undefined);
+  expect(mockPersonneService.supprimer).toHaveBeenCalledWith(undefined);
   expect(mockMessageService.add).toHaveBeenCalledWith(jasmine.objectContaining({
     severity: 'info',
     summary: 'Suppression en cours...'

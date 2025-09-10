@@ -11,41 +11,6 @@
     rejectButtonStyleClass="p-button-secondary">
   </p-confirmDialog>
 
-  <!-- Filtre par âge -->
-  <div class="filter-section mb-4">
-    <h4>Filtre par catégorie d'âge</h4>
-    <div class="p-field-radiobutton">
-      <p-radioButton
-        inputId="tous"
-        name="filtreAge"
-        value="tous"
-        [(ngModel)]="filtreAge"
-        (onClick)="appliquerFiltre()">
-      </p-radioButton>
-      <label for="tous" class="ml-2">Tous</label>
-    </div>
-    <div class="p-field-radiobutton">
-      <p-radioButton
-        inputId="mineurs"
-        name="filtreAge"
-        value="mineurs"
-        [(ngModel)]="filtreAge"
-        (onClick)="appliquerFiltre()">
-      </p-radioButton>
-      <label for="mineurs" class="ml-2">Mineurs (moins de 18 ans)</label>
-    </div>
-    <div class="p-field-radiobutton">
-      <p-radioButton
-        inputId="majeurs"
-        name="filtreAge"
-        value="majeurs"
-        [(ngModel)]="filtreAge"
-        (onClick)="appliquerFiltre()">
-      </p-radioButton>
-      <label for="majeurs" class="ml-2">Majeurs (18 ans et plus)</label>
-    </div>
-  </div>
-
   <p-table
     [value]="personnesFiltrees"
     [tableStyle]="{ 'min-width': '50rem' }"
@@ -58,7 +23,23 @@
           <p-sortIcon field="nom"></p-sortIcon>
         </th>
         <th>Prénom</th>
-        <th>Âge</th>
+        <th>
+          <div class="age-header">
+            Âge
+            <button
+              pButton
+              type="button"
+              icon="pi pi-filter"
+              class="p-button-text p-button-sm filter-button"
+              [pTooltip]="getFilterTooltip()"
+              tooltipPosition="top"
+              (click)="menu.toggle($event)"
+              [class.active-filter]="filtreAge !== 'tous'"
+              [attr.aria-label]="getFilterTooltip()">
+            </button>
+            <p-menu #menu [popup]="true" [model]="menuItems" [appendTo]="'body'"></p-menu>
+          </div>
+        </th>
         <th>Statut</th>
         <th>Département</th>
         <th>Actions</th>

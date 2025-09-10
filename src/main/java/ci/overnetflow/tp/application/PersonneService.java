@@ -2,7 +2,6 @@ package ci.overnetflow.tp.application;
 
 import ci.overnetflow.tp.domain.Personne;
 import ci.overnetflow.tp.domain.PersonneRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,38 +15,43 @@ public class PersonneService {
 
     private PersonneRepository personneRepository;
 
-    public Personne recupererUnePersonneParSonId(Long id) {
+    /**
+     * Récupérer une personne par son id
+     *
+     * @param id
+     * @return Personne
+     */
+    public Personne recupererParId(Long id) {
         return personneRepository.findById(id)
                 .orElseThrow( () -> new RuntimeException("Personne non trouver") );
     }
 
-    public Personne enregistrerUnePersonne(Personne personne) {
+    /**
+     * Enregistrer ou modifier une personne
+     *
+     * @param personne
+     * @return Personne
+     */
+    public Personne enregistrer(Personne personne) {
         return personneRepository.save(personne);
     }
 
-    public Personne modifierUnePersonne(Long id ,Personne personne) {
-        Personne personneAModifier = recupererUnePersonneParSonId(id);
-        if (personne.getNom() != null) {
-            personneAModifier.setNom(personne.getNom());
-        }
-        if (personne.getPrenom() != null) {
-            personneAModifier.setPrenom(personne.getPrenom());
-        }
-        if (personne.getAge() != null) {
-            personneAModifier.setAge(personne.getAge());
-        }
-        if (personne.getDepartement() != null) {
-            personneAModifier.setDepartement(personne.getDepartement());
-        }
-        return personneRepository.save(personneAModifier);
-    }
-
+    /**
+     * Supprimer une personne par son id
+     *
+     * @param id
+     */
     public void supprimerUnePersonne(Long id) {
-        Personne personneASupprimer = recupererUnePersonneParSonId(id);
+        Personne personneASupprimer = recupererParId(id);
         personneRepository.delete(personneASupprimer);
     }
 
-    public List<Personne> recupererTouteLesPersonnes() {
+    /**
+     * Récupérer la liste des personnes
+     *
+     * @return List<Personne>
+     */
+    public List<Personne> recupererPersonnes() {
         return personneRepository.findAll();
     };
 }

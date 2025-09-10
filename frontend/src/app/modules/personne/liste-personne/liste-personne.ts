@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PersonneVO} from '../models/personne.model';
 import {PersonneService} from '../../../private/service/personne-service';
 import {Router} from '@angular/router';
-import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-liste-personne',
@@ -10,10 +10,37 @@ import {ConfirmationService, MessageService} from 'primeng/api';
   templateUrl: './liste-personne.html',
   styleUrl: './liste-personne.css'
 })
-export class ListePersonne {
+export class ListePersonne implements OnInit {
   personnes!: PersonneVO[];
   personnesFiltrees!: PersonneVO[];
   filtreAge: string = 'tous';
+
+  menuItems: MenuItem[] = [
+    {
+      label: 'Tous',
+      icon: 'pi pi-list',
+      command: () => {
+        this.filtreAge = 'tous';
+        this.appliquerFiltre();
+      }
+    },
+    {
+      label: 'Mineurs (< 18 ans)',
+      icon: 'pi pi-users',
+      command: () => {
+        this.filtreAge = 'mineurs';
+        this.appliquerFiltre();
+      }
+    },
+    {
+      label: 'Majeurs (≥ 18 ans)',
+      icon: 'pi pi-user',
+      command: () => {
+        this.filtreAge = 'majeurs';
+        this.appliquerFiltre();
+      }
+    }
+  ];
 
   constructor(
     private personneService: PersonneService,
@@ -27,10 +54,10 @@ export class ListePersonne {
   }
 
   chargerPersonnes() {
-    this.personneService.laListeDesPersonnes().subscribe({
+    this.personneService.liste().subscribe({
       next: (response: any) => {
         this.personnes = response;
-        this.personnesFiltrees = [...this.personnes]; // Copie pour le filtrage
+        this.personnesFiltrees = [...this.personnes];
         this.appliquerFiltre();
         console.log(this.personnes);
       },
@@ -98,10 +125,9 @@ export class ListePersonne {
       life: 1000
     });
 
-    this.personneService.supprimerUnePersonne(id).subscribe({
+    this.personneService.supprimer(id).subscribe({
       next: (response: any) => {
         console.log('Suppression réussie:', response);
-
 
         this.personnes = this.personnes.filter(p => p.id !== id);
         this.appliquerFiltre();
@@ -128,5 +154,16 @@ export class ListePersonne {
 
   ajouter(personne: any) {
     this.router.navigateByUrl('/personne/ajout');
+  }
+
+  getFilterTooltip(): string {
+    switch (this.filtreAge) {
+      case 'mineurs':
+        return 'Filtre actif: Mineurs seulement';
+      case 'majeurs':
+        return 'Filtre actif: Majeurs seulement';
+      default:
+        return 'Cliquez pour filtrer par âge';
+    }
   }
 }

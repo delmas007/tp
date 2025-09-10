@@ -1,49 +1,67 @@
 package ci.overnetflow.tp.interfaces;
 
 import ci.overnetflow.tp.application.PersonneVO;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/personnes")
 public class PersonneControleur {
+
+    private final PersonneFacade personneFacade;
 
     public PersonneControleur(PersonneFacade personneFacade) {
         this.personneFacade = personneFacade;
     }
 
-    private final PersonneFacade personneFacade;
-
+    /**
+     * Enregistrer une personne dans un département.
+     *
+     * @param personneVO la personne à enregistrer.
+     * @param idDepartement l'identifiant du département où enregistrer la personne.
+     *
+     * @return la personne enregistrée avec son identifiant.
+     */
     @PostMapping("/enregistrer/{idDepartement}")
     @ResponseBody
-    public PersonneVO enregistrerUnePersonne(@RequestBody PersonneVO personneVO,@PathVariable("idDepartement") Long idDepartement) {
-        return personneFacade.enregistrerUnePersonne(personneVO,idDepartement);
+    public PersonneVO enregistrerModifier(
+            @RequestBody PersonneVO personneVO,
+            @PathVariable("idDepartement")
+            Long idDepartement) {
+        return personneFacade.enregistrerModifier(personneVO,idDepartement);
     }
 
+    /**
+     * Récupérer une personne par son id.
+     *
+     * @param id l'identifiant de la personne à récupérer.
+     *
+     * @return la personne correspondante à l'identifiant fourni.
+     */
     @GetMapping("/recuperer/{id}")
     @ResponseBody
-    public PersonneVO recupererUnePersonneParSonId(@PathVariable("id") Long id) {
-        return personneFacade.recupererUnePersonneParSonId(id);
+    public PersonneVO recupererParId(@PathVariable("id") Long id) {
+        return personneFacade.recupererParId(id);
     }
 
-    @PutMapping("/modifier/{idPersonne}/{idDepartement}")
-    @ResponseBody
-    public PersonneVO modifierUnePersonne(
-            @PathVariable("idPersonne") Long idPersonne,
-            @PathVariable("idDepartement") Long idDepartement,
-            @RequestBody PersonneVO personneVO) {
-        return personneFacade.modifierUnePersonne(idPersonne ,personneVO ,idDepartement);
-    }
 
+    /**
+     * Supprimer une personne par son id.
+     *
+     * @param id l'identifiant de la personne à supprimer.
+     */
     @DeleteMapping("/supprimer/{id}")
-    @ResponseBody
-    public void supprimerUnePersonne(@PathVariable("id") Long id) {
-        personneFacade.supprimerUnePersonne(id);
+    public void supprimerParId(@PathVariable("id") Long id) {
+        personneFacade.supprimerParId(id);
     }
 
+    /**
+     * Récupérer la liste de toutes les personnes.
+     *
+     * @return une liste contenant toutes les personnes.
+     */
     @GetMapping("/toutes")
     @ResponseBody
-    public java.util.List<PersonneVO> recupererTouteLesPersonnes() {
-        return personneFacade.recupererTouteLesPersonnes();
+    public java.util.List<PersonneVO> liste() {
+        return personneFacade.liste();
     }
 }

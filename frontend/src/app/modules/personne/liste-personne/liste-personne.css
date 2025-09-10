@@ -1,38 +1,56 @@
-.filter-section {
-  background: #f8f9fa;
-  padding: 1rem;
-  border-radius: 6px;
-  border: 1px solid #dee2e6;
+
+.age-header {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 5px;
 }
 
-.filter-section h4 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #495057;
+.filter-button {
+  margin-left: 5px;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s;
 }
 
-.p-field-radiobutton {
-  margin-bottom: 0.5rem;
+.filter-button:hover {
+  background-color: var(--surface-hover);
+}
+
+.filter-button.active-filter {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.filter-button.active-filter:hover {
+  background-color: var(--primary-color);
 }
 
 .status-badge {
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   font-size: 0.875rem;
-  font-weight: 600;
-  text-align: center;
-  display: inline-block;
-  min-width: 60px;
+  font-weight: 500;
 }
 
 .status-badge.mineur {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
 }
 
 .status-badge.majeur {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.action-buttons button {
+  margin: 0;
 }

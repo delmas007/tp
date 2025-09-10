@@ -21,7 +21,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {RippleModule} from 'primeng/ripple';
 import {DockModule} from 'primeng/dock';
 import {MenuModule} from 'primeng/menu';
-import {Tooltip} from 'primeng/tooltip';
+import {Tooltip, TooltipModule} from 'primeng/tooltip';
 import {Select} from 'primeng/select';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import Aura from '@primeuix/themes/aura';
@@ -46,11 +46,11 @@ import Aura from '@primeuix/themes/aura';
     ConfirmDialogModule,
     RippleModule,
     MenuModule,
-    MenuModule,
     Tooltip,
     Select,
     FormsModule,
     RadioButtonModule,
+    TooltipModule,
   ],
   providers: [
     ConfirmationService,

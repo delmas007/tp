@@ -3,8 +3,6 @@ package ci.overnetflow.tp.interfaces;
 import ci.overnetflow.tp.application.DepartementService;
 import ci.overnetflow.tp.application.DepartementVO;
 import ci.overnetflow.tp.domain.Departement;
-import ci.overnetflow.tp.domain.DepartementRepository;
-import ci.overnetflow.tp.domain.PersonneRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,23 +16,26 @@ public class DepartementFacade {
         this.departementService = departementService;
     }
 
-    public List<DepartementVO> listeDepartements() {
-        List<Departement> departements = departementService.recupererTousLesDepartements();
-        return departements.stream().map(departement -> {
-            DepartementVO departementVO = new DepartementVO();
-            departementVO.setId(departement.getId());
-            departementVO.setCode(departement.getCode());
-            departementVO.setDesignation(departement.getDesignation());
-            return departementVO;
-        }).toList();
+    /**
+     * Récupérer la liste des départements
+     *
+     * @return List<DepartementVO>
+     */
+    public List<DepartementVO> liste() {
+        List<Departement> departements = departementService.recupererDepartements();
+        return departements.stream()
+                .map(DepartementVO::new)
+                .toList();
     }
 
-    public DepartementVO recupererUnDepartementParSonId(Long id) {
-        Departement departement = departementService.recupererUnDepartementParSonId(id);
-        DepartementVO departementVO = new DepartementVO();
-        departementVO.setId(departement.getId());
-        departementVO.setCode(departement.getCode());
-        departementVO.setDesignation(departement.getDesignation());
-        return departementVO;
+    /**
+     * Récupérer un département par son id
+     *
+     * @param id
+     * @return DepartementVO
+     */
+    public DepartementVO recupererParId(Long id) {
+        Departement departement = departementService.recupererParId(id);
+        return new DepartementVO(departement);
     }
 }

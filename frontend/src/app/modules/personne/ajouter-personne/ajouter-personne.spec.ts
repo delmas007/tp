@@ -40,8 +40,16 @@ describe('AjouterPersonne', () => {
     { id: 3, code: 103, designation: 'Physique' }
   ];
 
+  const PERSONNE_EXISTANTE = {
+    id: 1,
+    nom: 'Dupont',
+    prenom: 'Jean',
+    age: 25,
+    departement: { id: 2, code: 101, designation: 'Informatique' }
+  };
+
   beforeEach(async () => {
-    mockPersonneService = jasmine.createSpyObj('PersonneService', ['ajouterUnePersonne']);
+    mockPersonneService = jasmine.createSpyObj('PersonneService', ['ajouterModifier','supprimer', 'recuperer']);
     mockDepartementService = jasmine.createSpyObj('DepartementService', ['listeDesDepartements']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockMessageService = jasmine.createSpyObj('MessageService', ['add']);
@@ -143,12 +151,12 @@ describe('AjouterPersonne', () => {
       detail: 'Veuillez corriger les erreurs dans le formulaire',
       life: 3000
     });
-    expect(mockPersonneService.ajouterUnePersonne).not.toHaveBeenCalled();
+    expect(mockPersonneService.ajouterModifier).not.toHaveBeenCalled();
   });
 
   it('devrait ajouter une personne avec succès quand le formulaire est valide', fakeAsync(() => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.ajouterUnePersonne.and.returnValue(of({ success: true }));
+    mockPersonneService.ajouterModifier.and.returnValue(of(PERSONNE_EXISTANTE));
     fixture.detectChanges();
 
     component.exampleForm.patchValue({
@@ -166,7 +174,7 @@ describe('AjouterPersonne', () => {
       age: 25
     };
 
-    expect(mockPersonneService.ajouterUnePersonne).toHaveBeenCalledWith(expectedPersonne, 1);
+    expect(mockPersonneService.ajouterModifier).toHaveBeenCalledWith(expectedPersonne, 1);
     expect(mockMessageService.add).toHaveBeenCalledWith({
       severity: 'success',
       summary: 'Succès',
@@ -183,7 +191,7 @@ describe('AjouterPersonne', () => {
 
   it('devrait afficher un message d\'erreur si l\'ajout échoue', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.ajouterUnePersonne.and.returnValue(throwError(() => new Error('Erreur serveur')));
+    mockPersonneService.ajouterModifier.and.returnValue(throwError(() => new Error('Erreur serveur')));
     fixture.detectChanges();
 
     component.exampleForm.patchValue({
@@ -240,7 +248,7 @@ describe('AjouterPersonne', () => {
 
   it('devrait créer l\'objet personne correctement lors de la soumission', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.ajouterUnePersonne.and.returnValue(of({ success: true }));
+    mockPersonneService.ajouterModifier.and.returnValue(of(PERSONNE_EXISTANTE));
     fixture.detectChanges();
 
     component.exampleForm.patchValue({
@@ -261,7 +269,7 @@ describe('AjouterPersonne', () => {
 
   it('devrait gérer les champs avec des espaces', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.ajouterUnePersonne.and.returnValue(of({ success: true }));
+    mockPersonneService.ajouterModifier.and.returnValue(of(PERSONNE_EXISTANTE));
     fixture.detectChanges();
 
     component.exampleForm.patchValue({

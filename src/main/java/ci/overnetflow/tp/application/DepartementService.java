@@ -17,32 +17,43 @@ public class DepartementService {
         this.departementRepository = departementRepository;
     }
 
-    public Departement recupererUnDepartementParSonId(Long id) {
+    /**
+     * Récupérer un département par son id
+     *
+     * @param id
+     * @return Departement
+     */
+    public Departement recupererParId(Long id) {
         return departementRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Département non trouvé"));
     }
 
-    public Departement enregistrerUnDepartement(Departement departement) {
+    /**
+     * Enregistrer ou modifier un département
+     *
+     * @param departement
+     * @return Departement
+     */
+    public Departement enregistrer(Departement departement) {
         return departementRepository.save(departement);
     }
 
-    public Departement modifierUnDepartement(Long id, Departement departement) {
-        Departement departementAModifier = recupererUnDepartementParSonId(id);
-        if (departement.getCode() != null) {
-            departementAModifier.setCode(departement.getCode());
-        }
-        if (departement.getDesignation() != null) {
-            departementAModifier.setDesignation(departement.getDesignation());
-        }
-        return departementRepository.save(departementAModifier);
-    }
-
-    public void supprimerUnDepartement(Long id) {
-        Departement departementASupprimer = recupererUnDepartementParSonId(id);
+    /**
+     * Supprimer un département par son id
+     *
+     * @param id
+     */
+    public void supprimerParId(Long id) {
+        Departement departementASupprimer = recupererParId(id);
         departementRepository.delete(departementASupprimer);
     }
 
-    public List<Departement> recupererTousLesDepartements() {
+    /**
+     * Récupérer la liste des départements
+     *
+     * @return List<Departement>
+     */
+    public List<Departement> recupererDepartements() {
         return departementRepository.findAll();
     }
 }

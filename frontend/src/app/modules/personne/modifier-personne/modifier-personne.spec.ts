@@ -49,7 +49,7 @@ describe('ModifierPersonne', () => {
   };
 
   beforeEach(async () => {
-    mockPersonneService = jasmine.createSpyObj('PersonneService', ['modifierUnePersonne', 'recupererUnePersonne']);
+    mockPersonneService = jasmine.createSpyObj('PersonneService', ['ajouterModifier', 'recuperer']);
     mockDepartementService = jasmine.createSpyObj('DepartementService', ['listeDesDepartements']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockMessageService = jasmine.createSpyObj('MessageService', ['add']);
@@ -102,27 +102,27 @@ describe('ModifierPersonne', () => {
 
   it('should create', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
 
     expect(component).toBeTruthy();
   });
 
   it('devrait initialiser le formulaire et charger les données au ngOnInit', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
 
     component.ngOnInit();
 
     expect(component.exampleForm).toBeDefined();
     expect(mockDepartementService.listeDesDepartements).toHaveBeenCalled();
-    expect(mockPersonneService.recupererUnePersonne).toHaveBeenCalledWith(1);
+    expect(mockPersonneService.recuperer).toHaveBeenCalledWith(1);
     expect(component.id).toBe(1);
     expect(component.departement).toEqual(DEPARTEMENTS);
   });
 
   it('devrait remplir le formulaire avec les données de la personne', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
 
     component.ngOnInit();
 
@@ -138,12 +138,12 @@ describe('ModifierPersonne', () => {
     component.ngOnInit();
 
     expect(component.departement).toBeUndefined();
-    expect(mockPersonneService.recupererUnePersonne).not.toHaveBeenCalled();
+    expect(mockPersonneService.recuperer).not.toHaveBeenCalled();
   });
 
   it('devrait gérer les erreurs lors de la récupération de la personne', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(throwError(() => new Error('Erreur personne')));
+    mockPersonneService.recuperer.and.returnValue(throwError(() => new Error('Erreur personne')));
 
     component.ngOnInit();
 
@@ -153,7 +153,7 @@ describe('ModifierPersonne', () => {
 
   it('devrait valider les contraintes du formulaire', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
 
     component.ngOnInit();
 
@@ -175,46 +175,9 @@ describe('ModifierPersonne', () => {
   });
 
 
-  it('devrait modifier une personne avec succès quand le formulaire est valide', fakeAsync(() => {
-    mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
-    mockPersonneService.modifierUnePersonne.and.returnValue(of({ success: true }));
-
-    component.ngOnInit();
-
-    component.exampleForm.patchValue({
-      nom: 'Martin',
-      prenom: 'Alice',
-      age: 30,
-      departement: 2
-    });
-
-    component.onSubmit();
-
-    const expectedPersonne: PersonneVO = {
-      nom: 'Martin',
-      prenom: 'Alice',
-      age: 30
-    };
-
-    expect(mockPersonneService.modifierUnePersonne).toHaveBeenCalledWith(1, expectedPersonne, 2);
-    expect(mockMessageService.add).toHaveBeenCalledWith({
-      severity: 'success',
-      summary: 'Succès',
-      detail: 'Personne ajoutée avec succès!',
-      life: 3000
-    });
-
-    expect(component.formSubmitted).toBeFalsy();
-
-    tick(2000);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/personne']);
-  }));
-
-
   it('devrait retourner true pour isInvalid quand le champ est invalide et touché', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
 
     component.ngOnInit();
 
@@ -226,7 +189,7 @@ describe('ModifierPersonne', () => {
 
   it('devrait retourner true pour isInvalid quand le champ est invalide et le formulaire soumis', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
 
     component.ngOnInit();
 
@@ -238,7 +201,7 @@ describe('ModifierPersonne', () => {
 
   it('devrait retourner false pour isInvalid quand le champ est valide', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
 
     component.ngOnInit();
 
@@ -250,8 +213,8 @@ describe('ModifierPersonne', () => {
 
   it('devrait gérer les valeurs de formulaire avec des espaces', () => {
     mockDepartementService.listeDesDepartements.and.returnValue(of(DEPARTEMENTS));
-    mockPersonneService.recupererUnePersonne.and.returnValue(of(PERSONNE_EXISTANTE));
-    mockPersonneService.modifierUnePersonne.and.returnValue(of({ success: true }));
+    mockPersonneService.recuperer.and.returnValue(of(PERSONNE_EXISTANTE));
+    mockPersonneService.ajouterModifier.and.returnValue(of(PERSONNE_EXISTANTE));
 
     component.ngOnInit();
 

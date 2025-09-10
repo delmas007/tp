@@ -57,7 +57,7 @@ export class AjouterPersonne implements OnInit{
       }
       console.log(this.personne);
       const departementId: number = this.exampleForm.get('departement')?.value;
-      this.personneService.ajouterUnePersonne(this.personne,departementId).subscribe({
+      this.personneService.ajouterModifier(this.personne,departementId).subscribe({
         next: (response: any) => {
           console.log('Succès:', response);
 

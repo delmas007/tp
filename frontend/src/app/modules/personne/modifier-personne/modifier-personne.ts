@@ -42,7 +42,7 @@ export class ModifierPersonne implements OnInit{
         this.departement = departements;
 
         this.id = this.activatedRoute.snapshot.params['id'];
-        this.personneService.recupererUnePersonne(this.id).subscribe({
+        this.personneService.recuperer(this.id).subscribe({
           next: (response: any) => {
             this.exampleForm.patchValue({
               nom: response.nom,
@@ -69,11 +69,12 @@ export class ModifierPersonne implements OnInit{
 
     if (this.exampleForm.valid) {
       this.personne={
+        id: this.id,
         nom: this.exampleForm.get('nom')?.value,
         prenom: this.exampleForm.get('prenom')?.value,
         age: this.exampleForm.get('age')?.value
       }
-      this.personneService.modifierUnePersonne(this.id,this.personne,this.exampleForm.get('departement')?.value).subscribe({
+      this.personneService.ajouterModifier(this.personne,this.exampleForm.get('departement')?.value).subscribe({
         next: (response: any) => {
           console.log('Succès:', response);
 

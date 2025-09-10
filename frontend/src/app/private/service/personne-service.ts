@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {environmentDev} from '../../../environment/environment.dev';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {PersonneVO} from '../../modules/personne/models/personne.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,25 +14,19 @@ export class PersonneService {
   private baseUrl: string = environmentDev.baseUrl;
   private endpoint: any = environmentDev.endPoint;
 
-  laListeDesPersonnes() : Observable<any>{
-    return this.http.get(`${this.baseUrl}/${this.endpoint.personne.getAll}`);
+  liste() : Observable<PersonneVO[]>{
+    return this.http.get<PersonneVO[]>(`${this.baseUrl}/${this.endpoint.personne.getAll}`);
   }
 
-  supprimerUnePersonne(id: number | undefined) {
+  supprimer(id: number | undefined) {
     return this.http.delete(`${this.baseUrl}/${this.endpoint.personne.delete}/${id}`);
   }
 
-  ajouterUnePersonne(data: any, departementId: number) {
-    return this.http.post(`${this.baseUrl}/${this.endpoint.personne.create}/${departementId}`, data);
+  ajouterModifier(data: any, departementId: number): Observable<PersonneVO>{
+    return this.http.post<PersonneVO>(`${this.baseUrl}/${this.endpoint.personne.create}/${departementId}`, data);
   }
 
-  recupererUnePersonne(id: number) : Observable<any>{
-    return this.http.get(`${this.baseUrl}/${this.endpoint.personne.getOne}/${id}`);
-  }
-
-  modifierUnePersonne(idPersonne: number, data: any,idDepartement: number,) {
-    console.log( "id departement" + idDepartement + " id personne " + idPersonne + " data " + data);
-
-    return this.http.put(`${this.baseUrl}/${this.endpoint.personne.update}/${idPersonne}/${idDepartement}`, data);
+  recuperer(id: number) : Observable<PersonneVO>{
+    return this.http.get<PersonneVO>(`${this.baseUrl}/${this.endpoint.personne.getOne}/${id}`);
   }
 }
